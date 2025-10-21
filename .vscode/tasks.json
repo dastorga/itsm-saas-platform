@@ -1,0 +1,29 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Start Django Backend",
+			"type": "shell",
+			"command": "cd backend && source venv/bin/activate && python manage.py runserver",
+			"isBackground": true,
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Start Angular Frontend",
+			"type": "shell",
+			"command": "cd frontend && npm install && npm start",
+			"isBackground": true,
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Start with Docker Compose",
+			"type": "shell",
+			"command": "docker-compose up -d",
+			"isBackground": true,
+			"problemMatcher": [],
+			"group": "build"
+		}
+	]
+}

@@ -1,0 +1,52 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* Material Design Theme */
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+
+/* Custom ITSM Styles */
+.itsm-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.itsm-card {
+  margin: 16px;
+  padding: 16px;
+}
+
+.itsm-toolbar {
+  background-color: #1976d2;
+  color: white;
+}
+
+.priority-high {
+  color: #f44336;
+}
+
+.priority-medium {
+  color: #ff9800;
+}
+
+.priority-low {
+  color: #4caf50;
+}
+
+.status-open {
+  color: #2196f3;
+}
+
+.status-in-progress {
+  color: #ff9800;
+}
+
+.status-resolved {
+  color: #4caf50;
+}
+
+.status-closed {
+  color: #757575;
+}
