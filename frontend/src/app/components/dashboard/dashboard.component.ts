@@ -1,155 +1,139 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { TicketService, Ticket } from '../../services/ticket.service';
+import { AssetService, Asset } from '../../services/asset.service';
+import { ApiService } from '../../services/api.service';
+
+interface DashboardStats {
+  totalTickets: number;
+  openTickets: number;
+  inProgressTickets: number;
+  resolvedTickets: number;
+  criticalTickets: number;
+  totalAssets: number;
+  activeAssets: number;
+  maintenanceAssets: number;
+}
 
 @Component({
   selector: 'app-dashboard',
-  template: `
-    <div class="itsm-container">
-      <h1>ITSM Dashboard</h1>
-      
-      <div class="dashboard-grid">
-        <mat-card class="dashboard-card">
-          <mat-card-header>
-            <mat-card-title>
-              <mat-icon>bug_report</mat-icon>
-              Open Tickets
-            </mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <div class="metric-number">{{ stats.openTickets }}</div>
-            <div class="metric-label">Tickets awaiting response</div>
-          </mat-card-content>
-        </mat-card>
-
-        <mat-card class="dashboard-card">
-          <mat-card-header>
-            <mat-card-title>
-              <mat-icon>assignment</mat-icon>
-              In Progress
-            </mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <div class="metric-number">{{ stats.inProgressTickets }}</div>
-            <div class="metric-label">Tickets being worked on</div>
-          </mat-card-content>
-        </mat-card>
-
-        <mat-card class="dashboard-card">
-          <mat-card-header>
-            <mat-card-title>
-              <mat-icon>devices</mat-icon>
-              Assets
-            </mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <div class="metric-number">{{ stats.totalAssets }}</div>
-            <div class="metric-label">Total managed assets</div>
-          </mat-card-content>
-        </mat-card>
-
-        <mat-card class="dashboard-card">
-          <mat-card-header>
-            <mat-card-title>
-              <mat-icon>people</mat-icon>
-              Users
-            </mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <div class="metric-number">{{ stats.totalUsers }}</div>
-            <div class="metric-label">Active users</div>
-          </mat-card-content>
-        </mat-card>
-      </div>
-
-      <div class="recent-activity">
-        <mat-card>
-          <mat-card-header>
-            <mat-card-title>Recent Activity</mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <mat-list>
-              <mat-list-item *ngFor="let activity of recentActivities">
-                <mat-icon matListIcon>{{ activity.icon }}</mat-icon>
-                <div matLine>{{ activity.description }}</div>
-                <div matLine class="secondary">{{ activity.timestamp }}</div>
-              </mat-list-item>
-            </mat-list>
-          </mat-card-content>
-        </mat-card>
-      </div>
-    </div>
-  `,
-  styles: [`
-    .dashboard-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 16px;
-      margin-bottom: 24px;
-    }
-
-    .dashboard-card {
-      text-align: center;
-    }
-
-    .metric-number {
-      font-size: 2.5em;
-      font-weight: bold;
-      color: #1976d2;
-    }
-
-    .metric-label {
-      color: #666;
-      margin-top: 8px;
-    }
-
-    .recent-activity {
-      margin-top: 24px;
-    }
-
-    .secondary {
-      color: #666;
-      font-size: 0.8em;
-    }
-
-    mat-card-title mat-icon {
-      margin-right: 8px;
-      vertical-align: middle;
-    }
-  `]
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-  stats = {
-    openTickets: 12,
-    inProgressTickets: 8,
-    totalAssets: 145,
-    totalUsers: 42
+  stats: DashboardStats = {
+    totalTickets: 0,
+    openTickets: 0,
+    inProgressTickets: 0,
+    resolvedTickets: 0,
+    criticalTickets: 0,
+    totalAssets: 0,
+    activeAssets: 0,
+    maintenanceAssets: 0
   };
 
-  recentActivities = [
-    {
-      icon: 'bug_report',
-      description: 'New ticket created: Network connectivity issue',
-      timestamp: '2 minutes ago'
-    },
-    {
-      icon: 'assignment_turned_in',
-      description: 'Ticket #IT-000123 resolved',
-      timestamp: '15 minutes ago'
-    },
-    {
-      icon: 'devices',
-      description: 'New asset added: Dell Laptop #LT-001234',
-      timestamp: '1 hour ago'
-    },
-    {
-      icon: 'person_add',
-      description: 'New user registered: john.doe@company.com',
-      timestamp: '2 hours ago'
-    }
-  ];
+  recentTickets: Ticket[] = [];
+  isLoading = true;
+  error: string | null = null;
 
-  constructor() { }
+  constructor(
+    private ticketService: TicketService,
+    private assetService: AssetService,
+    private apiService: ApiService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    // Load dashboard data
+    if (!this.apiService.isAuthenticated()) {
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    this.loadDashboardData();
+  }
+
+  loadDashboardData(): void {
+    this.isLoading = true;
+    this.error = null;
+
+    // Load tickets data
+    this.ticketService.getTickets({ page_size: 100 }).subscribe({
+      next: (response) => {
+        const tickets = response.results || [];
+        this.stats.totalTickets = response.count || tickets.length;
+        this.stats.openTickets = tickets.filter(t => t.status === 'open').length;
+        this.stats.inProgressTickets = tickets.filter(t => t.status === 'in_progress').length;
+        this.stats.resolvedTickets = tickets.filter(t => t.status === 'resolved').length;
+        this.stats.criticalTickets = tickets.filter(t => t.priority === 'critical').length;
+        
+        // Get recent tickets (last 5)
+        this.recentTickets = tickets.slice(0, 5);
+        
+        this.loadAssetsData();
+      },
+      error: (error) => {
+        console.error('Error loading tickets:', error);
+        this.error = 'Failed to load dashboard data';
+        this.isLoading = false;
+      }
+    });
+  }
+
+  loadAssetsData(): void {
+    this.assetService.getAssets({ page_size: 100 }).subscribe({
+      next: (response) => {
+        const assets = response.results || [];
+        this.stats.totalAssets = response.count || assets.length;
+        this.stats.activeAssets = assets.filter(a => a.status === 'active').length;
+        this.stats.maintenanceAssets = assets.filter(a => a.status === 'maintenance').length;
+        
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Error loading assets:', error);
+        this.isLoading = false;
+      }
+    });
+  }
+
+  navigateToTickets(): void {
+    this.router.navigate(['/tickets']);
+  }
+
+  navigateToAssets(): void {
+    this.router.navigate(['/assets']);
+  }
+
+  navigateToUsers(): void {
+    this.router.navigate(['/users']);
+  }
+
+  navigateToOrganizations(): void {
+    this.router.navigate(['/organizations']);
+  }
+
+  logout(): void {
+    this.apiService.clearAuthTokens();
+    this.router.navigate(['/login']);
+  }
+
+  getPriorityClass(priority: string): string {
+    switch (priority) {
+      case 'critical': return 'priority-critical';
+      case 'high': return 'priority-high';
+      case 'medium': return 'priority-medium';
+      case 'low': return 'priority-low';
+      default: return '';
+    }
+  }
+
+  getStatusClass(status: string): string {
+    switch (status) {
+      case 'open': return 'status-open';
+      case 'in_progress': return 'status-progress';
+      case 'resolved': return 'status-resolved';
+      case 'closed': return 'status-closed';
+      default: return '';
+    }
   }
 }

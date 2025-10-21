@@ -1,0 +1,57 @@
+<div class="login-container">
+  <div class="login-card">
+    <div class="login-header">
+      <h1>ITSM SaaS Platform</h1>
+      <p>Sign in to your account</p>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+      <div class="form-group">
+        <label for="username">Username or Email</label>
+        <input
+          id="username"
+          type="text"
+          formControlName="username"
+          class="form-control"
+          [class.is-invalid]="username?.invalid && username?.touched"
+          placeholder="Enter your username or email"
+        />
+        <div *ngIf="username?.invalid && username?.touched" class="invalid-feedback">
+          Username is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          id="password"
+          type="password"
+          formControlName="password"
+          class="form-control"
+          [class.is-invalid]="password?.invalid && password?.touched"
+          placeholder="Enter your password"
+        />
+        <div *ngIf="password?.invalid && password?.touched" class="invalid-feedback">
+          Password is required
+        </div>
+      </div>
+
+      <div *ngIf="error" class="alert alert-danger">
+        {{ error }}
+      </div>
+
+      <button
+        type="submit"
+        class="btn btn-primary btn-block"
+        [disabled]="loading || loginForm.invalid"
+      >
+        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-2"></span>
+        {{ loading ? 'Signing in...' : 'Sign In' }}
+      </button>
+    </form>
+
+    <div class="login-footer">
+      <p>Don't have an account? Contact your administrator</p>
+    </div>
+  </div>
+</div>

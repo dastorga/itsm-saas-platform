@@ -1,0 +1,161 @@
+<div class="dashboard-container">
+  <!-- Header -->
+  <header class="dashboard-header">
+    <div class="header-content">
+      <h1>ITSM Dashboard</h1>
+      <div class="header-actions">
+        <button class="btn btn-primary" (click)="navigateToTickets()">
+          <i class="icon-ticket"></i> New Ticket
+        </button>
+        <button class="btn btn-secondary" (click)="logout()">
+          <i class="icon-logout"></i> Logout
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Loading spinner -->
+  <div *ngIf="isLoading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Loading dashboard...</p>
+  </div>
+
+  <!-- Error message -->
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
+    <button class="btn btn-link" (click)="loadDashboardData()">Retry</button>
+  </div>
+
+  <!-- Dashboard content -->
+  <div *ngIf="!isLoading && !error" class="dashboard-content">
+    <!-- Statistics Cards -->
+    <div class="stats-grid">
+      <div class="stat-card tickets" (click)="navigateToTickets()">
+        <div class="stat-icon">
+          <i class="icon-ticket"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-number">{{ stats.openTickets }}</div>
+          <div class="stat-label">Open Tickets</div>
+        </div>
+      </div>
+
+      <div class="stat-card progress" (click)="navigateToTickets()">
+        <div class="stat-icon">
+          <i class="icon-progress"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-number">{{ stats.inProgressTickets }}</div>
+          <div class="stat-label">In Progress</div>
+        </div>
+      </div>
+
+      <div class="stat-card critical" (click)="navigateToTickets()">
+        <div class="stat-icon">
+          <i class="icon-warning"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-number">{{ stats.criticalTickets }}</div>
+          <div class="stat-label">Critical</div>
+        </div>
+      </div>
+
+      <div class="stat-card assets" (click)="navigateToAssets()">
+        <div class="stat-icon">
+          <i class="icon-device"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-number">{{ stats.totalAssets }}</div>
+          <div class="stat-label">Total Assets</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content Grid -->
+    <div class="content-grid">
+      <!-- Recent Tickets -->
+      <div class="panel">
+        <div class="panel-header">
+          <h2>Recent Tickets</h2>
+          <button class="btn btn-link" (click)="navigateToTickets()">View All</button>
+        </div>
+        <div class="panel-content">
+          <div *ngIf="recentTickets.length === 0" class="no-data">
+            No tickets found
+          </div>
+          <div *ngFor="let ticket of recentTickets" class="ticket-item">
+            <div class="ticket-info">
+              <div class="ticket-title">{{ ticket.title }}</div>
+              <div class="ticket-meta">
+                <span class="ticket-number">{{ ticket.ticket_number }}</span>
+                <span class="ticket-date">{{ ticket.created_at | date:'short' }}</span>
+              </div>
+            </div>
+            <div class="ticket-badges">
+              <span class="badge priority" [ngClass]="getPriorityClass(ticket.priority)">
+                {{ ticket.priority }}
+              </span>
+              <span class="badge status" [ngClass]="getStatusClass(ticket.status)">
+                {{ ticket.status }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="panel">
+        <div class="panel-header">
+          <h2>Quick Actions</h2>
+        </div>
+        <div class="panel-content">
+          <div class="action-grid">
+            <button class="action-btn" (click)="navigateToTickets()">
+              <i class="icon-add"></i>
+              <span>Create Ticket</span>
+            </button>
+            <button class="action-btn" (click)="navigateToAssets()">
+              <i class="icon-device"></i>
+              <span>Manage Assets</span>
+            </button>
+            <button class="action-btn" (click)="navigateToUsers()">
+              <i class="icon-user"></i>
+              <span>User Management</span>
+            </button>
+            <button class="action-btn" (click)="navigateToOrganizations()">
+              <i class="icon-organization"></i>
+              <span>Organizations</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- System Status -->
+      <div class="panel">
+        <div class="panel-header">
+          <h2>System Overview</h2>
+        </div>
+        <div class="panel-content">
+          <div class="system-stats">
+            <div class="system-stat">
+              <div class="stat-label">Total Tickets</div>
+              <div class="stat-value">{{ stats.totalTickets }}</div>
+            </div>
+            <div class="system-stat">
+              <div class="stat-label">Resolved Today</div>
+              <div class="stat-value">{{ stats.resolvedTickets }}</div>
+            </div>
+            <div class="system-stat">
+              <div class="stat-label">Active Assets</div>
+              <div class="stat-value">{{ stats.activeAssets }}</div>
+            </div>
+            <div class="system-stat">
+              <div class="stat-label">In Maintenance</div>
+              <div class="stat-value">{{ stats.maintenanceAssets }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
