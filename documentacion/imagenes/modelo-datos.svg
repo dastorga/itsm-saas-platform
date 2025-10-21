@@ -1,0 +1,371 @@
+<svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .title { font: bold 18px sans-serif; text-anchor: middle; }
+      .table-title { font: bold 14px sans-serif; text-anchor: middle; fill: white; }
+      .field-name { font: 12px sans-serif; }
+      .field-type { font: 10px sans-serif; fill: #666; }
+      .pk { fill: #ffd54f; stroke: #f57f17; stroke-width: 2; }
+      .fk { fill: #81c784; stroke: #388e3c; stroke-width: 2; }
+      .regular { fill: #e1f5fe; stroke: #0277bd; stroke-width: 1; }
+      .table-header { fill: #1976d2; }
+      .relation-line { stroke: #424242; stroke-width: 2; fill: none; }
+      .one-to-many { fill: #424242; }
+    </style>
+    <marker id="one-to-many" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+      <circle cx="4" cy="4" r="3" class="one-to-many"/>
+    </marker>
+  </defs>
+  
+  <!-- Title -->
+  <text x="600" y="30" class="title">Modelo de Datos - ITSM SaaS Platform</text>
+  
+  <!-- ORGANIZATION Table -->
+  <g id="organization">
+    <rect x="50" y="70" width="200" height="25" class="table-header"/>
+    <text x="150" y="87" class="table-title">🏢 ORGANIZATION</text>
+    
+    <rect x="50" y="95" width="200" height="20" class="pk"/>
+    <text x="55" y="108" class="field-name">id</text>
+    <text x="245" y="108" class="field-type" text-anchor="end">UUID PK</text>
+    
+    <rect x="50" y="115" width="200" height="20" class="regular"/>
+    <text x="55" y="128" class="field-name">name</text>
+    <text x="245" y="128" class="field-type" text-anchor="end">VARCHAR(100)</text>
+    
+    <rect x="50" y="135" width="200" height="20" class="regular"/>
+    <text x="55" y="148" class="field-name">slug</text>
+    <text x="245" y="148" class="field-type" text-anchor="end">VARCHAR(50) UK</text>
+    
+    <rect x="50" y="155" width="200" height="20" class="regular"/>
+    <text x="55" y="168" class="field-name">description</text>
+    <text x="245" y="168" class="field-type" text-anchor="end">TEXT</text>
+    
+    <rect x="50" y="175" width="200" height="20" class="regular"/>
+    <text x="55" y="188" class="field-name">subscription_plan</text>
+    <text x="245" y="188" class="field-type" text-anchor="end">VARCHAR(20)</text>
+    
+    <rect x="50" y="195" width="200" height="20" class="regular"/>
+    <text x="55" y="208" class="field-name">max_users</text>
+    <text x="245" y="208" class="field-type" text-anchor="end">INTEGER</text>
+    
+    <rect x="50" y="215" width="200" height="20" class="regular"/>
+    <text x="55" y="228" class="field-name">is_active</text>
+    <text x="245" y="228" class="field-type" text-anchor="end">BOOLEAN</text>
+    
+    <rect x="50" y="235" width="200" height="20" class="regular"/>
+    <text x="55" y="248" class="field-name">created_at</text>
+    <text x="245" y="248" class="field-type" text-anchor="end">TIMESTAMP</text>
+  </g>
+  
+  <!-- USER Table -->
+  <g id="user">
+    <rect x="350" y="70" width="200" height="25" class="table-header"/>
+    <text x="450" y="87" class="table-title">👤 USER</text>
+    
+    <rect x="350" y="95" width="200" height="20" class="pk"/>
+    <text x="355" y="108" class="field-name">id</text>
+    <text x="545" y="108" class="field-type" text-anchor="end">INTEGER PK</text>
+    
+    <rect x="350" y="115" width="200" height="20" class="regular"/>
+    <text x="355" y="128" class="field-name">username</text>
+    <text x="545" y="128" class="field-type" text-anchor="end">VARCHAR(150) UK</text>
+    
+    <rect x="350" y="135" width="200" height="20" class="regular"/>
+    <text x="355" y="148" class="field-name">email</text>
+    <text x="545" y="148" class="field-type" text-anchor="end">EMAIL UK</text>
+    
+    <rect x="350" y="155" width="200" height="20" class="regular"/>
+    <text x="355" y="168" class="field-name">first_name</text>
+    <text x="545" y="168" class="field-type" text-anchor="end">VARCHAR(150)</text>
+    
+    <rect x="350" y="175" width="200" height="20" class="regular"/>
+    <text x="355" y="188" class="field-name">last_name</text>
+    <text x="545" y="188" class="field-type" text-anchor="end">VARCHAR(150)</text>
+    
+    <rect x="350" y="195" width="200" height="20" class="regular"/>
+    <text x="355" y="208" class="field-name">is_active</text>
+    <text x="545" y="208" class="field-type" text-anchor="end">BOOLEAN</text>
+    
+    <rect x="350" y="215" width="200" height="20" class="regular"/>
+    <text x="355" y="228" class="field-name">date_joined</text>
+    <text x="545" y="228" class="field-type" text-anchor="end">TIMESTAMP</text>
+  </g>
+  
+  <!-- MEMBERSHIP Table -->
+  <g id="membership">
+    <rect x="200" y="290" width="200" height="25" class="table-header"/>
+    <text x="300" y="307" class="table-title">🤝 MEMBERSHIP</text>
+    
+    <rect x="200" y="315" width="200" height="20" class="pk"/>
+    <text x="205" y="328" class="field-name">id</text>
+    <text x="395" y="328" class="field-type" text-anchor="end">UUID PK</text>
+    
+    <rect x="200" y="335" width="200" height="20" class="fk"/>
+    <text x="205" y="348" class="field-name">organization_id</text>
+    <text x="395" y="348" class="field-type" text-anchor="end">UUID FK</text>
+    
+    <rect x="200" y="355" width="200" height="20" class="fk"/>
+    <text x="205" y="368" class="field-name">user_id</text>
+    <text x="395" y="368" class="field-type" text-anchor="end">INTEGER FK</text>
+    
+    <rect x="200" y="375" width="200" height="20" class="regular"/>
+    <text x="205" y="388" class="field-name">role</text>
+    <text x="395" y="388" class="field-type" text-anchor="end">VARCHAR(20)</text>
+    
+    <rect x="200" y="395" width="200" height="20" class="regular"/>
+    <text x="205" y="408" class="field-name">is_active</text>
+    <text x="395" y="408" class="field-type" text-anchor="end">BOOLEAN</text>
+  </g>
+  
+  <!-- TICKET Table -->
+  <g id="ticket">
+    <rect x="650" y="70" width="220" height="25" class="table-header"/>
+    <text x="760" y="87" class="table-title">🎫 TICKET</text>
+    
+    <rect x="650" y="95" width="220" height="20" class="pk"/>
+    <text x="655" y="108" class="field-name">id</text>
+    <text x="865" y="108" class="field-type" text-anchor="end">UUID PK</text>
+    
+    <rect x="650" y="115" width="220" height="20" class="fk"/>
+    <text x="655" y="128" class="field-name">organization_id</text>
+    <text x="865" y="128" class="field-type" text-anchor="end">UUID FK</text>
+    
+    <rect x="650" y="135" width="220" height="20" class="regular"/>
+    <text x="655" y="148" class="field-name">ticket_number</text>
+    <text x="865" y="148" class="field-type" text-anchor="end">VARCHAR(20) UK</text>
+    
+    <rect x="650" y="155" width="220" height="20" class="regular"/>
+    <text x="655" y="168" class="field-name">title</text>
+    <text x="865" y="168" class="field-type" text-anchor="end">VARCHAR(200)</text>
+    
+    <rect x="650" y="175" width="220" height="20" class="regular"/>
+    <text x="655" y="188" class="field-name">description</text>
+    <text x="865" y="188" class="field-type" text-anchor="end">TEXT</text>
+    
+    <rect x="650" y="195" width="220" height="20" class="regular"/>
+    <text x="655" y="208" class="field-name">ticket_type</text>
+    <text x="865" y="208" class="field-type" text-anchor="end">VARCHAR(20)</text>
+    
+    <rect x="650" y="215" width="220" height="20" class="regular"/>
+    <text x="655" y="228" class="field-name">priority</text>
+    <text x="865" y="228" class="field-type" text-anchor="end">VARCHAR(10)</text>
+    
+    <rect x="650" y="235" width="220" height="20" class="regular"/>
+    <text x="655" y="248" class="field-name">status</text>
+    <text x="865" y="248" class="field-type" text-anchor="end">VARCHAR(20)</text>
+    
+    <rect x="650" y="255" width="220" height="20" class="fk"/>
+    <text x="655" y="268" class="field-name">requester_id</text>
+    <text x="865" y="268" class="field-type" text-anchor="end">INTEGER FK</text>
+    
+    <rect x="650" y="275" width="220" height="20" class="fk"/>
+    <text x="655" y="288" class="field-name">assignee_id</text>
+    <text x="865" y="288" class="field-type" text-anchor="end">INTEGER FK</text>
+    
+    <rect x="650" y="295" width="220" height="20" class="regular"/>
+    <text x="655" y="308" class="field-name">created_at</text>
+    <text x="865" y="308" class="field-type" text-anchor="end">TIMESTAMP</text>
+    
+    <rect x="650" y="315" width="220" height="20" class="regular"/>
+    <text x="655" y="328" class="field-name">due_date</text>
+    <text x="865" y="328" class="field-type" text-anchor="end">DATE</text>
+  </g>
+  
+  <!-- CATEGORY Table -->
+  <g id="category">
+    <rect x="950" y="70" width="200" height="25" class="table-header"/>
+    <text x="1050" y="87" class="table-title">📁 CATEGORY</text>
+    
+    <rect x="950" y="95" width="200" height="20" class="pk"/>
+    <text x="955" y="108" class="field-name">id</text>
+    <text x="1145" y="108" class="field-type" text-anchor="end">UUID PK</text>
+    
+    <rect x="950" y="115" width="200" height="20" class="fk"/>
+    <text x="955" y="128" class="field-name">organization_id</text>
+    <text x="1145" y="128" class="field-type" text-anchor="end">UUID FK</text>
+    
+    <rect x="950" y="135" width="200" height="20" class="regular"/>
+    <text x="955" y="148" class="field-name">name</text>
+    <text x="1145" y="148" class="field-type" text-anchor="end">VARCHAR(100)</text>
+    
+    <rect x="950" y="155" width="200" height="20" class="regular"/>
+    <text x="955" y="168" class="field-name">description</text>
+    <text x="1145" y="168" class="field-type" text-anchor="end">TEXT</text>
+    
+    <rect x="950" y="175" width="200" height="20" class="regular"/>
+    <text x="955" y="188" class="field-name">color</text>
+    <text x="1145" y="188" class="field-type" text-anchor="end">VARCHAR(7)</text>
+    
+    <rect x="950" y="195" width="200" height="20" class="regular"/>
+    <text x="955" y="208" class="field-name">is_active</text>
+    <text x="1145" y="208" class="field-type" text-anchor="end">BOOLEAN</text>
+  </g>
+  
+  <!-- ASSET Table -->
+  <g id="asset">
+    <rect x="50" y="450" width="220" height="25" class="table-header"/>
+    <text x="160" y="467" class="table-title">💻 ASSET</text>
+    
+    <rect x="50" y="475" width="220" height="20" class="pk"/>
+    <text x="55" y="488" class="field-name">id</text>
+    <text x="265" y="488" class="field-type" text-anchor="end">UUID PK</text>
+    
+    <rect x="50" y="495" width="220" height="20" class="fk"/>
+    <text x="55" y="508" class="field-name">organization_id</text>
+    <text x="265" y="508" class="field-type" text-anchor="end">UUID FK</text>
+    
+    <rect x="50" y="515" width="220" height="20" class="regular"/>
+    <text x="55" y="528" class="field-name">asset_tag</text>
+    <text x="265" y="528" class="field-type" text-anchor="end">VARCHAR(50) UK</text>
+    
+    <rect x="50" y="535" width="220" height="20" class="regular"/>
+    <text x="55" y="548" class="field-name">name</text>
+    <text x="265" y="548" class="field-type" text-anchor="end">VARCHAR(200)</text>
+    
+    <rect x="50" y="555" width="220" height="20" class="regular"/>
+    <text x="55" y="568" class="field-name">asset_type</text>
+    <text x="265" y="568" class="field-type" text-anchor="end">VARCHAR(50)</text>
+    
+    <rect x="50" y="575" width="220" height="20" class="regular"/>
+    <text x="55" y="588" class="field-name">status</text>
+    <text x="265" y="588" class="field-type" text-anchor="end">VARCHAR(20)</text>
+    
+    <rect x="50" y="595" width="220" height="20" class="fk"/>
+    <text x="55" y="608" class="field-name">assigned_to_id</text>
+    <text x="265" y="608" class="field-type" text-anchor="end">INTEGER FK</text>
+  </g>
+  
+  <!-- COMMENT Table -->
+  <g id="comment">
+    <rect x="650" y="450" width="200" height="25" class="table-header"/>
+    <text x="750" y="467" class="table-title">💬 COMMENT</text>
+    
+    <rect x="650" y="475" width="200" height="20" class="pk"/>
+    <text x="655" y="488" class="field-name">id</text>
+    <text x="845" y="488" class="field-type" text-anchor="end">UUID PK</text>
+    
+    <rect x="650" y="495" width="200" height="20" class="fk"/>
+    <text x="655" y="508" class="field-name">ticket_id</text>
+    <text x="845" y="508" class="field-type" text-anchor="end">UUID FK</text>
+    
+    <rect x="650" y="515" width="200" height="20" class="fk"/>
+    <text x="655" y="528" class="field-name">author_id</text>
+    <text x="845" y="528" class="field-type" text-anchor="end">INTEGER FK</text>
+    
+    <rect x="650" y="535" width="200" height="20" class="regular"/>
+    <text x="655" y="548" class="field-name">content</text>
+    <text x="845" y="548" class="field-type" text-anchor="end">TEXT</text>
+    
+    <rect x="650" y="555" width="200" height="20" class="regular"/>
+    <text x="655" y="568" class="field-name">is_internal</text>
+    <text x="845" y="568" class="field-type" text-anchor="end">BOOLEAN</text>
+    
+    <rect x="650" y="575" width="200" height="20" class="regular"/>
+    <text x="655" y="588" class="field-name">created_at</text>
+    <text x="845" y="588" class="field-type" text-anchor="end">TIMESTAMP</text>
+  </g>
+  
+  <!-- ATTACHMENT Table -->
+  <g id="attachment">
+    <rect x="950" y="450" width="200" height="25" class="table-header"/>
+    <text x="1050" y="467" class="table-title">📎 ATTACHMENT</text>
+    
+    <rect x="950" y="475" width="200" height="20" class="pk"/>
+    <text x="955" y="488" class="field-name">id</text>
+    <text x="1145" y="488" class="field-type" text-anchor="end">UUID PK</text>
+    
+    <rect x="950" y="495" width="200" height="20" class="fk"/>
+    <text x="955" y="508" class="field-name">ticket_id</text>
+    <text x="1145" y="508" class="field-type" text-anchor="end">UUID FK</text>
+    
+    <rect x="950" y="515" width="200" height="20" class="regular"/>
+    <text x="955" y="528" class="field-name">file</text>
+    <text x="1145" y="528" class="field-type" text-anchor="end">FILE</text>
+    
+    <rect x="950" y="535" width="200" height="20" class="regular"/>
+    <text x="955" y="548" class="field-name">filename</text>
+    <text x="1145" y="548" class="field-type" text-anchor="end">VARCHAR(255)</text>
+    
+    <rect x="950" y="555" width="200" height="20" class="regular"/>
+    <text x="955" y="568" class="field-name">file_size</text>
+    <text x="1145" y="568" class="field-type" text-anchor="end">INTEGER</text>
+    
+    <rect x="950" y="575" width="200" height="20" class="fk"/>
+    <text x="955" y="588" class="field-name">uploaded_by_id</text>
+    <text x="1145" y="588" class="field-type" text-anchor="end">INTEGER FK</text>
+  </g>
+  
+  <!-- Relationships -->
+  
+  <!-- Organization to Membership -->
+  <line x1="150" y1="255" x2="150" y2="280" class="relation-line"/>
+  <line x1="150" y1="280" x2="200" y2="280" class="relation-line"/>
+  <line x1="200" y1="280" x2="200" y2="335" class="relation-line"/>
+  <circle cx="150" cy="255" r="3" fill="#424242"/>
+  <text x="125" y="270" class="field-type">1</text>
+  <text x="175" y="330" class="field-type">*</text>
+  
+  <!-- User to Membership -->
+  <line x1="450" y1="235" x2="450" y2="280" class="relation-line"/>
+  <line x1="450" y1="280" x2="400" y2="280" class="relation-line"/>
+  <line x1="400" y1="280" x2="400" y2="355" class="relation-line"/>
+  <circle cx="450" cy="235" r="3" fill="#424242"/>
+  <text x="470" y="270" class="field-type">1</text>
+  <text x="420" y="350" class="field-type">*</text>
+  
+  <!-- Organization to Ticket -->
+  <line x1="250" y1="120" x2="650" y2="120" class="relation-line"/>
+  <circle cx="250" cy="120" r="3" fill="#424242"/>
+  <text x="270" y="115" class="field-type">1</text>
+  <text x="630" y="115" class="field-type">*</text>
+  
+  <!-- User to Ticket (Requester) -->
+  <line x1="550" y1="150" x2="650" y2="150" class="relation-line"/>
+  <circle cx="550" cy="150" r="3" fill="#424242"/>
+  <text x="570" y="145" class="field-type">1</text>
+  <text x="630" y="145" class="field-type">*</text>
+  
+  <!-- Ticket to Comment -->
+  <line x1="760" y1="335" x2="760" y2="450" class="relation-line"/>
+  <circle cx="760" cy="335" r="3" fill="#424242"/>
+  <text x="780" y="350" class="field-type">1</text>
+  <text x="780" y="480" class="field-type">*</text>
+  
+  <!-- Ticket to Attachment -->
+  <line x1="870" y1="320" x2="1050" y2="320" class="relation-line"/>
+  <line x1="1050" y1="320" x2="1050" y2="450" class="relation-line"/>
+  <circle cx="870" cy="320" r="3" fill="#424242"/>
+  <text x="890" y="315" class="field-type">1</text>
+  <text x="1070" y="440" class="field-type">*</text>
+  
+  <!-- Organization to Category -->
+  <line x1="250" y1="100" x2="950" y2="100" class="relation-line"/>
+  <circle cx="250" cy="100" r="3" fill="#424242"/>
+  <text x="270" y="95" class="field-type">1</text>
+  <text x="930" y="95" class="field-type">*</text>
+  
+  <!-- Organization to Asset -->
+  <line x1="150" y1="255" x2="150" y2="450" class="relation-line"/>
+  <circle cx="150" cy="255" r="3" fill="#424242"/>
+  <text x="170" y="350" class="field-type">1</text>
+  <text x="170" y="480" class="field-type">*</text>
+  
+  <!-- Legend -->
+  <rect x="50" y="650" width="400" height="120" fill="#f5f5f5" stroke="#424242" stroke-width="1" rx="5"/>
+  <text x="250" y="670" class="subtitle">📋 Leyenda</text>
+  
+  <rect x="70" y="680" width="15" height="15" class="pk"/>
+  <text x="95" y="692" class="field-name">Clave Primaria (PK)</text>
+  
+  <rect x="70" y="705" width="15" height="15" class="fk"/>
+  <text x="95" y="717" class="field-name">Clave Foránea (FK)</text>
+  
+  <rect x="70" y="730" width="15" height="15" class="regular"/>
+  <text x="95" y="742" class="field-name">Campo Regular</text>
+  
+  <circle cx="280" cy="690" r="3" fill="#424242"/>
+  <text x="295" y="695" class="field-name">Relación Uno a Muchos</text>
+  
+  <text x="70" y="760" class="field-type">UK = Unique Key (Clave Única)</text>
+</svg>

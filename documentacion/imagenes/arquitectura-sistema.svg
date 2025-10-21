@@ -1,0 +1,122 @@
+<svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .title { font: bold 18px sans-serif; text-anchor: middle; }
+      .subtitle { font: 14px sans-serif; text-anchor: middle; }
+      .label { font: 12px sans-serif; text-anchor: middle; }
+      .small-label { font: 10px sans-serif; text-anchor: middle; }
+      .frontend { fill: #4fc3f7; stroke: #0277bd; stroke-width: 2; }
+      .backend { fill: #81c784; stroke: #388e3c; stroke-width: 2; }
+      .database { fill: #ffb74d; stroke: #f57c00; stroke-width: 2; }
+      .container { fill: #9575cd; stroke: #512da8; stroke-width: 2; }
+      .user { fill: #f06292; stroke: #c2185b; stroke-width: 2; }
+      .arrow { stroke: #424242; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#424242" />
+    </marker>
+  </defs>
+  
+  <!-- Title -->
+  <text x="400" y="30" class="title">ITSM SaaS Platform - Arquitectura del Sistema</text>
+  
+  <!-- User Layer -->
+  <rect x="50" y="60" width="700" height="80" class="user" rx="10"/>
+  <text x="400" y="85" class="subtitle">👤 Capa de Usuario</text>
+  <text x="200" y="110" class="label">🌐 Navegadores Web</text>
+  <text x="600" y="110" class="label">📱 Dispositivos Móviles</text>
+  
+  <!-- Frontend Layer -->
+  <rect x="50" y="160" width="300" height="120" class="frontend" rx="10"/>
+  <text x="200" y="185" class="subtitle">⚡ Frontend - Angular</text>
+  <text x="120" y="210" class="label">🔄 Router</text>
+  <text x="200" y="210" class="label">🧩 Componentes</text>
+  <text x="280" y="210" class="label">🔧 Servicios</text>
+  <text x="120" y="235" class="small-label">• Login</text>
+  <text x="120" y="250" class="small-label">• Dashboard</text>
+  <text x="120" y="265" class="small-label">• Tickets</text>
+  <text x="200" y="235" class="small-label">• Forms</text>
+  <text x="200" y="250" class="small-label">• Tables</text>
+  <text x="200" y="265" class="small-label">• Dialogs</text>
+  <text x="280" y="235" class="small-label">• API</text>
+  <text x="280" y="250" class="small-label">• Auth</text>
+  <text x="280" y="265" class="small-label">• Tickets</text>
+  
+  <!-- Backend Layer -->
+  <rect x="450" y="160" width="300" height="120" class="backend" rx="10"/>
+  <text x="600" y="185" class="subtitle">🐍 Backend - Django</text>
+  <text x="520" y="210" class="label">📡 REST API</text>
+  <text x="600" y="210" class="label">🔐 Auth JWT</text>
+  <text x="680" y="210" class="label">📋 ViewSets</text>
+  <text x="520" y="235" class="small-label">• Organizations</text>
+  <text x="520" y="250" class="small-label">• Tickets</text>
+  <text x="520" y="265" class="small-label">• Assets</text>
+  <text x="600" y="235" class="small-label">• Login</text>
+  <text x="600" y="250" class="small-label">• Tokens</text>
+  <text x="600" y="265" class="small-label">• Permissions</text>
+  <text x="680" y="235" class="small-label">• CRUD</text>
+  <text x="680" y="250" class="small-label">• Filters</text>
+  <text x="680" y="265" class="small-label">• Serializers</text>
+  
+  <!-- Database Layer -->
+  <rect x="50" y="300" width="200" height="100" class="database" rx="10"/>
+  <text x="150" y="325" class="subtitle">🐘 PostgreSQL</text>
+  <text x="80" y="350" class="small-label">• Organizations</text>
+  <text x="80" y="365" class="small-label">• Users</text>
+  <text x="80" y="380" class="small-label">• Tickets</text>
+  <text x="80" y="395" class="small-label">• Assets</text>
+  <text x="220" y="350" class="small-label">• Categories</text>
+  <text x="220" y="365" class="small-label">• Comments</text>
+  <text x="220" y="380" class="small-label">• Attachments</text>
+  <text x="220" y="395" class="small-label">• Memberships</text>
+  
+  <!-- Cache Layer -->
+  <rect x="300" y="300" width="150" height="100" class="database" rx="10"/>
+  <text x="375" y="325" class="subtitle">🔴 Redis</text>
+  <text x="375" y="350" class="label">Cache</text>
+  <text x="330" y="375" class="small-label">• Sessions</text>
+  <text x="420" y="375" class="small-label">• Tokens</text>
+  <text x="330" y="390" class="small-label">• API Cache</text>
+  <text x="420" y="390" class="small-label">• Rate Limiting</text>
+  
+  <!-- Docker Layer -->
+  <rect x="500" y="300" width="250" height="100" class="container" rx="10"/>
+  <text x="625" y="325" class="subtitle">🐳 Docker Compose</text>
+  <text x="540" y="350" class="small-label">📦 Frontend</text>
+  <text x="610" y="350" class="small-label">📦 Backend</text>
+  <text x="680" y="350" class="small-label">📦 Database</text>
+  <text x="540" y="365" class="small-label">Node:18-alpine</text>
+  <text x="610" y="365" class="small-label">Python:3.11</text>
+  <text x="680" y="365" class="small-label">Postgres:15</text>
+  <text x="540" y="380" class="small-label">Puerto: 4200</text>
+  <text x="610" y="380" class="small-label">Puerto: 8000</text>
+  <text x="680" y="380" class="small-label">Puerto: 5432</text>
+  
+  <!-- External Services -->
+  <rect x="50" y="430" width="700" height="60" class="frontend" rx="10"/>
+  <text x="400" y="455" class="subtitle">🌐 Servicios Externos</text>
+  <text x="150" y="475" class="label">📧 Email SMTP</text>
+  <text x="300" y="475" class="label">📊 Swagger UI</text>
+  <text x="450" y="475" class="label">🔍 Monitoring</text>
+  <text x="600" y="475" class="label">☁️ Cloud Storage</text>
+  
+  <!-- Security Layer -->
+  <rect x="50" y="510" width="700" height="60" class="backend" rx="10"/>
+  <text x="400" y="535" class="subtitle">🔐 Capa de Seguridad</text>
+  <text x="150" y="555" class="label">JWT Tokens</text>
+  <text x="300" y="555" class="label">CORS Headers</text>
+  <text x="450" y="555" class="label">HTTPS/TLS</text>
+  <text x="600" y="555" class="label">Rate Limiting</text>
+  
+  <!-- Arrows -->
+  <line x1="400" y1="140" x2="400" y2="160" class="arrow"/>
+  <line x1="350" y1="220" x2="450" y2="220" class="arrow"/>
+  <line x1="200" y1="280" x2="150" y2="300" class="arrow"/>
+  <line x1="600" y1="280" x2="375" y2="300" class="arrow"/>
+  <line x1="600" y1="280" x2="625" y2="300" class="arrow"/>
+  <line x1="400" y1="490" x2="400" y2="510" class="arrow"/>
+  
+  <!-- Ports and URLs -->
+  <text x="120" y="155" class="small-label">http://localhost:4200</text>
+  <text x="680" y="155" class="small-label">http://localhost:8000</text>
+</svg>
