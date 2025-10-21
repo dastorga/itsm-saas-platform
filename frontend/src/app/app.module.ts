@@ -8,12 +8,16 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/auth/login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { TicketCreateComponent } from './components/tickets/ticket-create/ticket-create.component';
+import { TicketListComponent } from './components/tickets/ticket-list/ticket-list.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    DashboardComponent
+    DashboardComponent,
+    TicketCreateComponent,
+    TicketListComponent
   ],
   imports: [
     BrowserModule,

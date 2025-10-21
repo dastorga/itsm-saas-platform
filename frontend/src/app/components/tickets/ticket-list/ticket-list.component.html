@@ -1,0 +1,215 @@
+<div class="ticket-list-container">
+  <!-- Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <div class="header-left">
+        <h1>
+          <i class="icon-ticket"></i>
+          Tickets
+        </h1>
+        <p class="header-subtitle">Manage and track all service requests and incidents</p>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-primary" (click)="onCreateTicket()">
+          <i class="icon-add"></i>
+          New Ticket
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters-section">
+    <div class="filters-container">
+      <div class="search-box">
+        <i class="icon-search"></i>
+        <input
+          type="text"
+          placeholder="Search tickets..."
+          (input)="onSearch($event)"
+          class="search-input"
+        />
+      </div>
+
+      <div class="filter-controls">
+        <select 
+          [(ngModel)]="filters.status" 
+          (change)="onFilterChange()"
+          class="filter-select"
+        >
+          <option *ngFor="let option of statusOptions" [value]="option.value">
+            {{ option.label }}
+          </option>
+        </select>
+
+        <select 
+          [(ngModel)]="filters.priority" 
+          (change)="onFilterChange()"
+          class="filter-select"
+        >
+          <option *ngFor="let option of priorityOptions" [value]="option.value">
+            {{ option.label }}
+          </option>
+        </select>
+
+        <select 
+          [(ngModel)]="filters.ticket_type" 
+          (change)="onFilterChange()"
+          class="filter-select"
+        >
+          <option *ngFor="let option of typeOptions" [value]="option.value">
+            {{ option.label }}
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading state -->
+  <div *ngIf="isLoading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Loading tickets...</p>
+  </div>
+
+  <!-- Error state -->
+  <div *ngIf="error" class="alert alert-danger">
+    <i class="icon-warning"></i>
+    {{ error }}
+    <button class="btn btn-link" (click)="loadTickets()">Retry</button>
+  </div>
+
+  <!-- Tickets List -->
+  <div *ngIf="!isLoading && !error" class="tickets-content">
+    
+    <!-- Empty state -->
+    <div *ngIf="tickets.length === 0" class="empty-state">
+      <div class="empty-icon">🎫</div>
+      <h3>No tickets found</h3>
+      <p>No tickets match your current filters, or you haven't created any tickets yet.</p>
+      <button class="btn btn-primary" (click)="onCreateTicket()">
+        <i class="icon-add"></i>
+        Create Your First Ticket
+      </button>
+    </div>
+
+    <!-- Tickets table -->
+    <div *ngIf="tickets.length > 0" class="tickets-table-container">
+      
+      <!-- Stats summary -->
+      <div class="tickets-summary">
+        <span class="total-count">{{ totalCount }} ticket{{ totalCount !== 1 ? 's' : '' }} found</span>
+      </div>
+
+      <!-- Table -->
+      <div class="tickets-table">
+        <div class="table-header">
+          <div class="header-cell ticket-number">Ticket</div>
+          <div class="header-cell title-col">Title</div>
+          <div class="header-cell type-col">Type</div>
+          <div class="header-cell priority-col">Priority</div>
+          <div class="header-cell status-col">Status</div>
+          <div class="header-cell date-col">Created</div>
+          <div class="header-cell actions-col">Actions</div>
+        </div>
+
+        <div 
+          *ngFor="let ticket of tickets" 
+          class="table-row"
+          (click)="onViewTicket(ticket)"
+        >
+          <div class="cell ticket-number">
+            <div class="ticket-info">
+              <span class="ticket-id">{{ ticket.ticket_number }}</span>
+              <span class="ticket-type-icon">{{ getTypeIcon(ticket.ticket_type) }}</span>
+            </div>
+          </div>
+
+          <div class="cell title-col">
+            <div class="ticket-title">
+              {{ ticket.title }}
+            </div>
+            <div class="ticket-meta">
+              <span class="requester">by {{ ticket.requester_name || 'Unknown' }}</span>
+              <span *ngIf="ticket.assignee_name" class="assignee">• assigned to {{ ticket.assignee_name }}</span>
+            </div>
+          </div>
+
+          <div class="cell type-col">
+            <span class="type-badge" [attr.data-type]="ticket.ticket_type">
+              {{ ticket.ticket_type?.replace('_', ' ') }}
+            </span>
+          </div>
+
+          <div class="cell priority-col">
+            <span 
+              class="priority-badge" 
+              [ngClass]="getPriorityClass(ticket.priority)"
+            >
+              {{ ticket.priority }}
+            </span>
+          </div>
+
+          <div class="cell status-col">
+            <span 
+              class="status-badge" 
+              [ngClass]="getStatusClass(ticket.status)"
+            >
+              {{ ticket.status?.replace('_', ' ') }}
+            </span>
+          </div>
+
+          <div class="cell date-col">
+            <div class="date-info">
+              <span class="date">{{ formatDate(ticket.created_at!) }}</span>
+              <span class="time">{{ formatDateTime(ticket.created_at!).split(' ')[1] }}</span>
+            </div>
+          </div>
+
+          <div class="cell actions-col">
+            <button 
+              class="btn btn-sm btn-outline"
+              (click)="onViewTicket(ticket); $event.stopPropagation()"
+            >
+              View
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pagination -->
+      <div *ngIf="totalPages > 1" class="pagination-container">
+        <div class="pagination">
+          <button 
+            class="pagination-btn"
+            [disabled]="currentPage === 1"
+            (click)="onPageChange(currentPage - 1)"
+          >
+            ‹ Previous
+          </button>
+
+          <button
+            *ngFor="let page of getPageNumbers()"
+            class="pagination-btn"
+            [class.active]="page === currentPage"
+            (click)="onPageChange(page)"
+          >
+            {{ page }}
+          </button>
+
+          <button 
+            class="pagination-btn"
+            [disabled]="currentPage === totalPages"
+            (click)="onPageChange(currentPage + 1)"
+          >
+            Next ›
+          </button>
+        </div>
+
+        <div class="pagination-info">
+          Showing {{ (currentPage - 1) * pageSize + 1 }} to 
+          {{ Math.min(currentPage * pageSize, totalCount) }} of {{ totalCount }} tickets
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
